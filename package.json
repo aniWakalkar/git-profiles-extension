@@ -1,0 +1,111 @@
+{
+  "name": "git-profiles",
+  "displayName": "Git Profiles",
+  "description": "Run custom Git command profiles (Normal, Migration, Frontend, etc.) from a sidebar with checkboxes. Create, edit and delete profiles from VS Code settings or the UI.",
+  "version": "0.1.0",
+  "publisher": "local-user",
+  "icon": "media/icon.png",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other",
+    "SCM Providers"
+  ],
+  "keywords": [
+    "git",
+    "profiles",
+    "commit",
+    "push",
+    "automation"
+  ],
+  "activationEvents": [
+    "onView:gitProfilesView"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "gitProfilesContainer",
+          "title": "Git Profiles",
+          "icon": "media/git-profiles.svg"
+        }
+      ]
+    },
+    "views": {
+      "gitProfilesContainer": [
+        {
+          "id": "gitProfilesView",
+          "name": "Git Profiles"
+        }
+      ]
+    },
+    "commands": [
+      { "command": "gitProfiles.run", "title": "Git Profiles: Run Profile" },
+      { "command": "gitProfiles.createProfile", "title": "Git Profiles: Create New Profile", "icon": "$(add)" },
+      { "command": "gitProfiles.editProfile", "title": "Git Profiles: Edit Profile" },
+      { "command": "gitProfiles.deleteProfile", "title": "Git Profiles: Delete Profile" },
+      { "command": "gitProfiles.openSettings", "title": "Git Profiles: Open Profiles in settings.json" },
+      { "command": "gitProfiles.refreshView", "title": "Git Profiles: Refresh", "icon": "$(refresh)" },
+      { "command": "gitProfiles.runChecked", "title": "Run Checked Commands", "icon": "$(play)" },
+      { "command": "gitProfiles.deleteProfileTree", "title": "Delete Profile", "icon": "$(trash)" },
+      { "command": "gitProfiles.renameProfile", "title": "Rename Profile", "icon": "$(edit)" },
+      { "command": "gitProfiles.addCommandToProfile", "title": "Add Command", "icon": "$(add)" },
+      { "command": "gitProfiles.editCommand", "title": "Edit Command", "icon": "$(edit)" },
+      { "command": "gitProfiles.deleteCommand", "title": "Delete Command", "icon": "$(trash)" },
+      { "command": "gitProfiles.checkAllCommands", "title": "Select All Commands", "icon": "$(check-all)" },
+      { "command": "gitProfiles.uncheckAllCommands", "title": "Deselect All Commands", "icon": "$(close-all)" }
+    ],
+    "menus": {
+      "view/title": [
+        { "command": "gitProfiles.createProfile", "when": "view == gitProfilesView", "group": "navigation@1" },
+        { "command": "gitProfiles.refreshView", "when": "view == gitProfilesView", "group": "navigation@2" }
+      ],
+      "view/item/context": [
+        { "command": "gitProfiles.runChecked", "when": "view == gitProfilesView && viewItem == profile", "group": "inline@1" },
+        { "command": "gitProfiles.addCommandToProfile", "when": "view == gitProfilesView && viewItem == profile", "group": "inline@2" },
+        { "command": "gitProfiles.renameProfile", "when": "view == gitProfilesView && viewItem == profile", "group": "inline@3" },
+        { "command": "gitProfiles.deleteProfileTree", "when": "view == gitProfilesView && viewItem == profile", "group": "inline@4" },
+        { "command": "gitProfiles.checkAllCommands", "when": "view == gitProfilesView && viewItem == profile", "group": "1_selection" },
+        { "command": "gitProfiles.uncheckAllCommands", "when": "view == gitProfilesView && viewItem == profile", "group": "1_selection" },
+        { "command": "gitProfiles.editCommand", "when": "view == gitProfilesView && viewItem == command", "group": "inline@1" },
+        { "command": "gitProfiles.deleteCommand", "when": "view == gitProfilesView && viewItem == command", "group": "inline@2" }
+      ]
+    },
+    "configuration": {
+      "title": "Git Profiles",
+      "properties": {
+        "gitProfiles.profiles": {
+          "type": "object",
+          "description": "Named Git command profiles. Each key is a profile name, each value is an ordered list of shell commands to run.",
+          "default": {
+            "Normal": [
+              "git add .",
+              "git commit -m \"update\"",
+              "git push"
+            ],
+            "Migration": [
+              "git add .",
+              "git commit -m \"migration\"",
+              "git push origin migration"
+            ]
+          }
+        },
+        "gitProfiles.runInSameTerminal": {
+          "type": "boolean",
+          "default": true,
+          "description": "If true, reuse a single 'Git Profiles' terminal for every run. If false, a new terminal is created each time."
+        }
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/git-profiles-vscode"
+  },
+  "scripts": {
+    "vscode:prepublish": "echo no-build-step-needed"
+  }
+}
