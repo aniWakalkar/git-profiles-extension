@@ -45,7 +45,14 @@ function runCommandsInTerminal(commands) {
   }
   const terminal = getTerminal();
   terminal.show();
-  terminal.sendText(commands.join(' && '));
+  // Send each command as its own line instead of joining with "&&".
+  // Windows PowerShell 5.1 (the default integrated shell on many Windows
+  // machines) does not support "&&" as a statement separator, so joining
+  // commands that way throws "token '&&' is not a valid statement separator".
+  // Sending them one at a time works identically across PowerShell, CMD, and bash.
+  for (const cmd of commands) {
+    terminal.sendText(cmd);
+  }
 }
 
 // -------------------- Tree View --------------------
