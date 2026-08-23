@@ -163,36 +163,247 @@ class GitProfilesProvider {
   }
 }
 
+// -------------------- Profile form (Webview panel) --------------------
+// Shows a proper side-by-side form: Name field at top, a Commands list
+// below with one row per command (each with its own remove button) and
+// an "+ Add Command" button, plus Save / Cancel. Used for both creating
+// a brand-new profile and doing a full edit of an existing one.
+
+function getFormHtml(webview, initialName, initialCommands) {
+  const nonce = String(Date.now());
+  const safeName = (initialName || '').replace(/"/g, '&quot;');
+  const commandsJson = JSON.stringify(initialCommands || ['']);
+
+  return /* html */ `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${nonce}';">
+<style>
+  body {
+    font-family: var(--vscode-font-family);
+    color: var(--vscode-foreground);
+    padding: 20px 24px;
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    margin-top: 18px;
+  }
+  input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    background: var(--vscode-input-background);
+    color: var(--vscode-input-foreground);
+    border: 1px solid var(--vscode-input-border, transparent);
+    border-radius: 3px;
+    font-family: var(--vscode-editor-font-family);
+  }
+  .command-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .command-row input {
+    flex: 1;
+  }
+  .icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--vscode-foreground);
+    opacity: 0.7;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    padding: 4px 8px;
+    border-radius: 3px;
+  }
+  .icon-btn:hover {
+    opacity: 1;
+    background: var(--vscode-toolbar-hoverBackground, rgba(128,128,128,0.2));
+  }
+  #addBtn {
+    margin-top: 4px;
+    background: transparent;
+    border: 1px dashed var(--vscode-input-border, #888);
+    color: var(--vscode-foreground);
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+  }
+  #addBtn:hover {
+    background: var(--vscode-toolbar-hoverBackground, rgba(128,128,128,0.15));
+  }
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 28px;
+  }
+  button.primary {
+    background: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: none;
+    padding: 8px 18px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  button.primary:hover {
+    background: var(--vscode-button-hoverBackground);
+  }
+  button.secondary {
+    background: var(--vscode-button-secondaryBackground, transparent);
+    color: var(--vscode-button-secondaryForeground, var(--vscode-foreground));
+    border: 1px solid var(--vscode-input-border, #888);
+    padding: 8px 18px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .hint {
+    opacity: 0.65;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+  <label for="name">Profile Name</label>
+  <input type="text" id="name" value="${safeName}" placeholder="e.g. Frontend, Migration, Staging" />
+
+  <label>Commands</label>
+  <div id="commandsList"></div>
+  <button id="addBtn">+ Add Command</button>
+  <div class="hint">Each row runs one after another, in order, when this profile is executed.</div>
+
+  <div class="actions">
+    <button class="primary" id="saveBtn">Save Profile</button>
+    <button class="secondary" id="cancelBtn">Cancel</button>
+  </div>
+
+<script nonce="${nonce}">
+  const vscodeApi = acquireVsCodeApi();
+  let commands = ${commandsJson};
+
+  const listEl = document.getElementById('commandsList');
+  const nameEl = document.getElementById('name');
+
+  function render() {
+    listEl.innerHTML = '';
+    commands.forEach((cmd, i) => {
+      const row = document.createElement('div');
+      row.className = 'command-row';
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = cmd;
+      input.placeholder = 'e.g. git add .';
+      input.addEventListener('input', (e) => { commands[i] = e.target.value; });
+
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'icon-btn';
+      removeBtn.title = 'Remove command';
+      removeBtn.textContent = '✕';
+      removeBtn.addEventListener('click', () => {
+        commands.splice(i, 1);
+        if (commands.length === 0) commands.push('');
+        render();
+      });
+
+      row.appendChild(input);
+      row.appendChild(removeBtn);
+      listEl.appendChild(row);
+    });
+  }
+
+  document.getElementById('addBtn').addEventListener('click', () => {
+    commands.push('');
+    render();
+  });
+
+  document.getElementById('saveBtn').addEventListener('click', () => {
+    const cleaned = commands.map((c) => c.trim()).filter(Boolean);
+    vscodeApi.postMessage({ type: 'save', name: nameEl.value.trim(), commands: cleaned });
+  });
+
+  document.getElementById('cancelBtn').addEventListener('click', () => {
+    vscodeApi.postMessage({ type: 'cancel' });
+  });
+
+  render();
+</script>
+</body>
+</html>`;
+}
+
+/**
+ * Opens the form panel. If originalName is provided, it's an edit of an
+ * existing profile (panel is pre-filled); otherwise it's a brand-new profile.
+ */
+function openProfileForm(originalName) {
+  const profiles = getProfiles();
+  const initialName = originalName || '';
+  const initialCommands = originalName ? profiles[originalName] || [''] : [''];
+
+  const panel = vscode.window.createWebviewPanel(
+    'gitProfilesForm',
+    originalName ? `Edit Profile: ${originalName}` : 'New Git Profile',
+    vscode.ViewColumn.One,
+    { enableScripts: true, retainContextWhenHidden: false }
+  );
+
+  panel.webview.html = getFormHtml(panel.webview, initialName, initialCommands);
+
+  panel.webview.onDidReceiveMessage(async (message) => {
+    if (message.type === 'cancel') {
+      panel.dispose();
+      return;
+    }
+
+    if (message.type === 'save') {
+      const newName = message.name;
+      const commands = message.commands;
+
+      if (!newName) {
+        vscode.window.showErrorMessage('Profile name cannot be empty.');
+        return;
+      }
+      if (!commands || commands.length === 0) {
+        vscode.window.showErrorMessage('Add at least one command.');
+        return;
+      }
+
+      const current = getProfiles();
+
+      // Renaming during edit: drop the old key.
+      if (originalName && originalName !== newName) {
+        delete current[originalName];
+      } else if (!originalName && current[newName]) {
+        const overwrite = await vscode.window.showWarningMessage(
+          `A profile named "${newName}" already exists. Overwrite it?`,
+          'Overwrite',
+          'Cancel'
+        );
+        if (overwrite !== 'Overwrite') return;
+      }
+
+      current[newName] = commands;
+      await saveProfiles(current);
+      vscode.window.showInformationMessage(`Profile "${newName}" saved.`);
+      panel.dispose();
+    }
+  });
+}
+
 // -------------------- Profile / Command CRUD (shared by palette + tree) --------------------
 
 async function createProfile() {
-  const name = await vscode.window.showInputBox({
-    prompt: 'New profile name (e.g. Frontend, Migration, Staging)',
-    validateInput: (v) => (v && v.trim().length > 0 ? null : 'Name cannot be empty'),
-  });
-  if (!name) return;
-
-  const profiles = getProfiles();
-  if (profiles[name]) {
-    const overwrite = await vscode.window.showWarningMessage(
-      `A profile named "${name}" already exists. Overwrite it?`,
-      'Overwrite',
-      'Cancel'
-    );
-    if (overwrite !== 'Overwrite') return;
-  }
-
-  const commandsRaw = await vscode.window.showInputBox({
-    prompt: 'Enter git commands separated by " && " (e.g. git add . && git commit -m "msg" && git push origin dev)',
-    placeHolder: 'git add . && git commit -m "update" && git push',
-  });
-  if (!commandsRaw) return;
-
-  const commands = commandsRaw.split('&&').map((c) => c.trim()).filter(Boolean);
-  profiles[name] = commands;
-  await saveProfiles(profiles);
-  vscode.window.showInformationMessage(`Profile "${name}" saved.`);
-  return name;
+  openProfileForm(null);
 }
 
 async function editProfile() {
@@ -204,22 +415,7 @@ async function editProfile() {
   }
   const picked = await vscode.window.showQuickPick(names, { placeHolder: 'Select a profile to edit' });
   if (!picked) return;
-  await editProfileCommandsRaw(picked);
-}
-
-async function editProfileCommandsRaw(profileName) {
-  const profiles = getProfiles();
-  const currentRaw = (profiles[profileName] || []).join(' && ');
-  const updatedRaw = await vscode.window.showInputBox({
-    prompt: `Edit commands for "${profileName}" (separated by " && ")`,
-    value: currentRaw,
-  });
-  if (updatedRaw === undefined) return;
-
-  const commands = updatedRaw.split('&&').map((c) => c.trim()).filter(Boolean);
-  profiles[profileName] = commands;
-  await saveProfiles(profiles);
-  vscode.window.showInformationMessage(`Profile "${profileName}" updated.`);
+  openProfileForm(picked);
 }
 
 async function deleteProfile() {

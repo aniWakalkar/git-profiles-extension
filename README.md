@@ -24,13 +24,41 @@ GIT PROFILES
 - **Profile par click / ▶ button** → sirf jo commands **checked (☑)** hain,
   wahi terminal mein sequence se run honge (unchecked commands skip ho jayenge).
 - **☑ / ☐ checkbox** → har command ke aage, is run ke liye include/exclude karo.
-- **+ (Add Command)** → profile mein naya command line add karo.
+- **+ (Add Command)** → profile mein naya command line add karo (quick single-line add).
 - **✎ (Rename)** → profile ka naam change karo.
 - **🗑 (Delete)** → profile hata do.
 - Har command line pe hover karo to uske apne **✎ Edit** / **🗑 Delete** icons
   bhi milenge.
 - Right-click ek profile par → **Select All / Deselect All Commands**.
 - View title bar mein **+ (New Profile)** aur **⟳ (Refresh)** buttons hain.
+
+### Full form panel (Name + Commands ek page pe)
+
+`+ New Profile` (view title) ya Command Palette se `Git Profiles: Create New
+Profile`/`Git Profiles: Edit Profile` chalane par ab ek **pura tab/page**
+khulta hai — chhota popup input box nahi:
+
+```
+┌─────────────────────────────────────┐
+│ Profile Name                         │
+│ [ Frontend                        ]  │
+│                                       │
+│ Commands                             │
+│ [ git add src/              ] [✕]    │
+│ [ git commit -m "frontend"  ] [✕]    │
+│ [ git push origin frontend  ] [✕]    │
+│ [+ Add Command]                      │
+│                                       │
+│ [ Save Profile ]   [ Cancel ]        │
+└─────────────────────────────────────┘
+```
+
+- Har command apni khud ki row mein hai, apna **✕ remove** button ke saath.
+- **+ Add Command** se jitni chaho utni rows add kar sakte ho.
+- **Save Profile** dabate hi profile settings.json mein save ho jata hai aur
+  sidebar turant refresh ho jata hai.
+- Isi form se profile **rename** bhi ho jata hai — bas Name field change
+  karke Save dabao.
 
 Checkbox state sirf current VS Code session ke liye hai (default: sab checked)
 — agar kisi run mein kuch commands temporarily skip karne hain to yahan se
