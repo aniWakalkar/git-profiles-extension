@@ -3,7 +3,7 @@
   "displayName": "Git Profiles",
   "description": "Run custom Git command profiles (Normal, Migration, Frontend, etc.) from a sidebar with checkboxes. Create, edit and delete profiles from VS Code settings or the UI.",
   "version": "0.1.0",
-  "publisher": "local-user",
+  "publisher": "aniketwakalkar",
   "icon": "media/icon.png",
   "license": "MIT",
   "engines": {
@@ -103,7 +103,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/git-profiles-vscode"
+    "url": "https://github.com/aniketwakalkar/git-profiles-extension"
   },
   "scripts": {
     "vscode:prepublish": "echo no-build-step-needed"

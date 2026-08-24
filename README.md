@@ -60,6 +60,34 @@ khulta hai — chhota popup input box nahi:
 - Isi form se profile **rename** bhi ho jata hai — bas Name field change
   karke Save dabao.
 
+### Git command suggestions (autocomplete)
+
+Har command input box pe **click ya type karte hi** ek dropdown khulta hai
+jisme common Git commands unki Hinglish description ke saath dikhte hain:
+
+```
+[ git c█                              ]
+┌──────────────────────────────────────┐
+│ git checkout <branch>                 │
+│ Kisi existing branch pe switch...     │
+├──────────────────────────────────────┤
+│ git checkout -b <branch>              │
+│ Nayi branch banake usme switch...     │
+├──────────────────────────────────────┤
+│ git clone <url>                       │
+│ Remote repository ko local mein...    │
+└──────────────────────────────────────┘
+```
+
+- Type karte hi list filter ho jati hai (command naam ya description dono se
+  match hoti hai).
+- Kisi suggestion pe click karo → wahi command box mein fill ho jata hai.
+- List mein `<branch>`, `<url>`, `<file>` jaise placeholders hote hain jinhe
+  aapko apne actual values se replace karna hota hai (jaise `<branch>` ko
+  `main` ya `feature/login` se).
+- Ye sirf ek helper hai — aap chaho to bina list use kiye bhi apna custom
+  command directly type kar sakte ho, wo bhi save ho jayega.
+
 Checkbox state sirf current VS Code session ke liye hai (default: sab checked)
 — agar kisi run mein kuch commands temporarily skip karne hain to yahan se
 uncheck kar do, permanent list settings.json mein hi rahegi.
