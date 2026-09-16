@@ -1,6 +1,6 @@
 const vscode = require('vscode');
 
-const { CONFIG_SECTION, PROFILES_KEY, getProfiles, saveProfiles } = require('./src/config');
+const { CONFIG_SECTION, PROFILES_KEY, getProfiles, saveProfiles, ensureDefaultProfiles } = require('./src/config');
 const { runCommandsInTerminal, disposeSharedTerminal } = require('./src/terminal');
 const {
   setExtensionContext,
@@ -38,8 +38,9 @@ const {
 
 // Entry point: runs once when the extension starts, sets up both sidebar
 // views and registers every command the extension provides.
-function activate(context) {
+async function activate(context) {
   setExtensionContext(context);
+  await ensureDefaultProfiles();
 
   const provider = new GitProfilesProvider();
   const treeView = vscode.window.createTreeView('gitProfilesView', {
@@ -92,6 +93,20 @@ function activate(context) {
   };
   changesProvider.onDidChangeTreeData(refreshBranchStatusBar);
   refreshBranchStatusBar();
+
+  // Number badge on the Custom Git Profiles activity-bar icon, like Source Control.
+  // Set on the first view in the container so VS Code paints it on the icon.
+  const updateChangesBadge = () => {
+    const count = changesProvider.changedFileCount();
+    treeView.badge = count > 0
+      ? {
+          value: count,
+          tooltip: count === 1 ? '1 file with changes' : `${count} files with changes`,
+        }
+      : undefined;
+  };
+  changesProvider.onDidChangeTreeData(updateChangesBadge);
+  updateChangesBadge();
 
   // Checking/unchecking a file's checkbox stages/unstages it.
   changesView.onDidChangeCheckboxState((e) => {
@@ -189,7 +204,7 @@ function activate(context) {
 
     branchStatusBarItem,
 
-    // Feature: refresh the Git Profiles sidebar tree.
+    // Feature: refresh the Custom Git Profiles sidebar tree.
     vscode.commands.registerCommand('gitProfiles.refreshView', () => provider.refresh()),
 
     // Feature: refresh the Changes sidebar tree.

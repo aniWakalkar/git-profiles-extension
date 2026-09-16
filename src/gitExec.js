@@ -24,7 +24,7 @@ async function confirmTrainingWheels(command, explanation) {
   if (!config.get('trainingWheels')) return true;
 
   const choice = await vscode.window.showWarningMessage(
-    `Git Profiles wants to run:\n\n${command}\n\n${explanation}`,
+    `Custom Git Profiles wants to run:\n\n${command}\n\n${explanation}`,
     { modal: true },
     'Yes',
     'No'

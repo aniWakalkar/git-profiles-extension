@@ -10,11 +10,11 @@ function getTerminal() {
 
   if (reuse) {
     if (!sharedTerminal || sharedTerminal.exitStatus !== undefined) {
-      sharedTerminal = vscode.window.createTerminal('Git Profiles');
+      sharedTerminal = vscode.window.createTerminal('Custom Git Profiles');
     }
     return sharedTerminal;
   }
-  return vscode.window.createTerminal('Git Profiles');
+  return vscode.window.createTerminal('Custom Git Profiles');
 }
 
 function runCommandsInTerminal(commands, profileName) {
@@ -31,7 +31,7 @@ function runCommandsInTerminal(commands, profileName) {
   // Sending them one at a time works identically across PowerShell, CMD, and bash.
   for (const cmd of commands) {
     terminal.sendText(cmd);
-    logCommand(cmd, profileName ? `Run as part of the "${profileName}" profile` : 'Run via Git Profiles');
+    logCommand(cmd, profileName ? `Run as part of the "${profileName}" profile` : 'Run via Custom Git Profiles');
   }
 }
 

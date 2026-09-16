@@ -1,6 +1,6 @@
 {
-  "name": "git-pros",
-  "displayName": "Git Pros",
+  "name": "git-pros-profiles",
+  "displayName": "Custom Git Profiles",
   "description": "Run custom Git command profiles (Normal, Migration, Frontend, etc.) from a sidebar with checkboxes. Create, edit and delete profiles from VS Code settings or the UI.",
   "version": "0.1.0",
   "publisher": "aniketwakalkar",
@@ -15,6 +15,7 @@
   ],
   "keywords": [
     "git",
+    "pros",
     "profiles",
     "commit",
     "push",
@@ -30,7 +31,7 @@
       "activitybar": [
         {
           "id": "gitProfilesContainer",
-          "title": "Git Profiles",
+          "title": "Custom Git Profiles",
           "icon": "media/git-profiles.svg"
         }
       ]
@@ -39,7 +40,7 @@
       "gitProfilesContainer": [
         {
           "id": "gitProfilesView",
-          "name": "Git Profiles"
+          "name": "Custom Git Profiles"
         },
         {
           "id": "gitChangesView",
@@ -52,12 +53,12 @@
       ]
     },
     "commands": [
-      { "command": "gitProfiles.run", "title": "Git Profiles: Run Profile" },
-      { "command": "gitProfiles.createProfile", "title": "Git Profiles: Create New Profile", "icon": "$(add)" },
-      { "command": "gitProfiles.editProfile", "title": "Git Profiles: Edit Profile" },
-      { "command": "gitProfiles.deleteProfile", "title": "Git Profiles: Delete Profile" },
-      { "command": "gitProfiles.openSettings", "title": "Git Profiles: Open Profiles in settings.json" },
-      { "command": "gitProfiles.refreshView", "title": "Git Profiles: Refresh", "icon": "$(refresh)" },
+      { "command": "gitProfiles.run", "title": "Custom Git Profiles: Run Profile" },
+      { "command": "gitProfiles.createProfile", "title": "Custom Git Profiles: Create New Profile", "icon": "$(add)" },
+      { "command": "gitProfiles.editProfile", "title": "Custom Git Profiles: Edit Profile" },
+      { "command": "gitProfiles.deleteProfile", "title": "Custom Git Profiles: Delete Profile" },
+      { "command": "gitProfiles.openSettings", "title": "Custom Git Profiles: Open Profiles in settings.json" },
+      { "command": "gitProfiles.refreshView", "title": "Custom Git Profiles: Refresh", "icon": "$(refresh)" },
       { "command": "gitProfiles.runChecked", "title": "Run Checked Commands", "icon": "$(play)" },
       { "command": "gitProfiles.deleteProfileTree", "title": "Delete Profile", "icon": "$(trash)" },
       { "command": "gitProfiles.renameProfile", "title": "Rename Profile", "icon": "$(edit)" },
@@ -66,24 +67,24 @@
       { "command": "gitProfiles.deleteCommand", "title": "Delete Command", "icon": "$(trash)" },
       { "command": "gitProfiles.checkAllCommands", "title": "Select All Commands", "icon": "$(check-all)" },
       { "command": "gitProfiles.uncheckAllCommands", "title": "Deselect All Commands", "icon": "$(close-all)" },
-      { "command": "gitProfiles.refreshChanges", "title": "Git Profiles: Refresh Changes", "icon": "$(refresh)" },
+      { "command": "gitProfiles.refreshChanges", "title": "Custom Git Profiles: Refresh Changes", "icon": "$(refresh)" },
       { "command": "gitProfiles.commitChanges", "title": "Commit Staged Changes", "icon": "$(save)" },
       { "command": "gitProfiles.stageAllChanges", "title": "Stage All Changes", "icon": "$(check-all)" },
       { "command": "gitProfiles.unstageAllChanges", "title": "Unstage All Changes", "icon": "$(close-all)" },
-      { "command": "gitProfiles.openChangeDiff", "title": "Git Profiles: Open Changes (Diff)" },
+      { "command": "gitProfiles.openChangeDiff", "title": "Custom Git Profiles: Open Changes (Diff)" },
       { "command": "gitProfiles.discardChange", "title": "Discard Changes", "icon": "$(discard)" },
       { "command": "gitProfiles.revertFileToCommit", "title": "Revert to Specific Commit...", "icon": "$(history)" },
       { "command": "gitProfiles.revertCheckedFiles", "title": "Revert Checked Files", "icon": "$(discard)" },
-      { "command": "gitProfiles.setAuthentication", "title": "Git Profiles: Set Authentication", "icon": "$(key)" },
-      { "command": "gitProfiles.clearAuthentication", "title": "Git Profiles: Clear Authentication" },
-      { "command": "gitProfiles.switchBranch", "title": "Git Profiles: Switch Branch", "icon": "$(arrow-swap)" },
-      { "command": "gitProfiles.pullChanges", "title": "Git Profiles: Pull", "icon": "$(arrow-down)" },
-      { "command": "gitProfiles.showCommitHistory", "title": "Git Profiles: Show Commit History", "icon": "$(git-commit)" },
-      { "command": "gitProfiles.setLogLocation", "title": "Git Profiles: Set Command Log Location" },
-      { "command": "gitProfiles.openCommandLog", "title": "Git Profiles: Open Command Log File", "icon": "$(output)" },
-      { "command": "gitProfiles.showCommandLogTerminal", "title": "Git Profiles: Show Command Log Terminal" },
-      { "command": "gitProfiles.toggleCommandLog", "title": "Git Profiles: Toggle Command Log", "icon": "$(checklist)" },
-      { "command": "gitProfiles.toggleTrainingWheels", "title": "Git Profiles: Toggle Training Wheels", "icon": "$(mortar-board)" }
+      { "command": "gitProfiles.setAuthentication", "title": "Custom Git Profiles: Set Authentication", "icon": "$(key)" },
+      { "command": "gitProfiles.clearAuthentication", "title": "Custom Git Profiles: Clear Authentication" },
+      { "command": "gitProfiles.switchBranch", "title": "Custom Git Profiles: Switch Branch", "icon": "$(arrow-swap)" },
+      { "command": "gitProfiles.pullChanges", "title": "Custom Git Profiles: Pull", "icon": "$(arrow-down)" },
+      { "command": "gitProfiles.showCommitHistory", "title": "Custom Git Profiles: Show Commit History", "icon": "$(git-commit)" },
+      { "command": "gitProfiles.setLogLocation", "title": "Custom Git Profiles: Set Command Log Location" },
+      { "command": "gitProfiles.openCommandLog", "title": "Custom Git Profiles: Open Command Log File", "icon": "$(output)" },
+      { "command": "gitProfiles.showCommandLogTerminal", "title": "Custom Git Profiles: Show Command Log Terminal" },
+      { "command": "gitProfiles.toggleCommandLog", "title": "Custom Git Profiles: Toggle Command Log", "icon": "$(checklist)" },
+      { "command": "gitProfiles.toggleTrainingWheels", "title": "Custom Git Profiles: Toggle Training Wheels", "icon": "$(mortar-board)" }
     ],
     "menus": {
       "view/title": [
@@ -116,49 +117,38 @@
       ]
     },
     "configuration": {
-      "title": "Git Profiles",
+      "title": "Custom Git Profiles",
       "properties": {
         "gitProfiles.profiles": {
           "type": "object",
-          "description": "Named Git command profiles. Each key is a profile name, each value is an ordered list of shell commands to run.",
-          "default": {
-            "Normal": [
-              "git add .",
-              "git commit -m \"update\"",
-              "git push"
-            ],
-            "Migration": [
-              "git add .",
-              "git commit -m \"migration\"",
-              "git push origin migration"
-            ]
-          }
+          "description": "Named Git command profiles. Each key is a profile name, each value is an ordered list of shell commands to run. Starter profiles (Normal, Migration) are copied here on first use and can be deleted.",
+          "default": {}
         },
         "gitProfiles.runInSameTerminal": {
           "type": "boolean",
           "default": true,
-          "description": "If true, reuse a single 'Git Profiles' terminal for every run. If false, a new terminal is created each time."
+          "description": "If true, reuse a single 'Custom Git Profiles' terminal for every run. If false, a new terminal is created each time."
         },
         "gitProfiles.enableCommandLog": {
           "type": "boolean",
           "default": false,
-          "description": "Off by default so no log file is created unless you opt in. When on, Git Profiles logs every command it runs (profile commands and UI-triggered git commands alike) to a file and echoes them into a dedicated terminal. Toggle from 'Git Profiles: Toggle Command Log' -- turning it on asks for confirmation first."
+          "description": "Off by default so no log file is created unless you opt in. When on, Custom Git Profiles logs every command it runs (profile commands and UI-triggered git commands alike) to a file and echoes them into a dedicated terminal. Toggle from 'Custom Git Profiles: Toggle Command Log' -- turning it on asks for confirmation first."
         },
         "gitProfiles.logFilePath": {
           "type": "string",
           "default": "",
-          "description": "Absolute path to the file where Git Profiles logs every command it runs (profile commands and UI-triggered git commands alike), each with a short explanation. Leave empty to use the default location inside the extension's global storage. Use 'Git Profiles: Set Command Log Location' to change this from a file picker instead of typing a path. Has no effect unless gitProfiles.enableCommandLog is on."
+          "description": "Absolute path to the file where Custom Git Profiles logs every command it runs (profile commands and UI-triggered git commands alike), each with a short explanation. Leave empty to use the default location inside the extension's global storage. Use 'Custom Git Profiles: Set Command Log Location' to change this from a file picker instead of typing a path. Has no effect unless gitProfiles.enableCommandLog is on."
         },
         "gitProfiles.protectedBranches": {
           "type": "array",
           "items": { "type": "string" },
           "default": [],
-          "description": "Branch names (e.g. \"main\", \"production\") that Git Profiles will never merge into directly (e.g. via the commit panel's \"Also merge into other branches after pushing\" option). A trailing \"*\" matches as a prefix, e.g. \"release/*\". Merging into one of these pushes the source branch and opens a pull/merge request page instead, so a human has to review and approve it on the actual hosting platform -- git itself has no concept of approval, so this can't be enforced without going through that platform."
+          "description": "Branch names (e.g. \"main\", \"production\") that Custom Git Profiles will never merge into directly (e.g. via the commit panel's \"Also merge into other branches after pushing\" option). A trailing \"*\" matches as a prefix, e.g. \"release/*\". Merging into one of these pushes the source branch and opens a pull/merge request page instead, so a human has to review and approve it on the actual hosting platform -- git itself has no concept of approval, so this can't be enforced without going through that platform."
         },
         "gitProfiles.trainingWheels": {
           "type": "boolean",
-          "default": true,
-          "description": "When on (default), every meaningful Git command triggered from the UI (staging, committing, switching branches, merging, reverting, etc.) shows exactly what it's about to run and asks Yes/No before it runs. Toggle from 'Git Profiles: Toggle Training Wheels'."
+          "default": false,
+          "description": "When on, every meaningful Git command triggered from the UI (staging, committing, switching branches, merging, reverting, etc.) shows exactly what it's about to run and asks Yes/No before it runs. Off by default. Toggle from 'Custom Git Profiles: Toggle Training Wheels'."
         }
       }
     }

@@ -15,11 +15,11 @@ function getLogTerminal() {
     logWriteEmitter = new vscode.EventEmitter();
     const pty = {
       onDidWrite: logWriteEmitter.event,
-      open: () => logWriteEmitter.fire('Git Profiles command log — every command the extension runs shows up here.\r\n\r\n'),
+      open: () => logWriteEmitter.fire('Custom Git Profiles command log — every command the extension runs shows up here.\r\n\r\n'),
       close: () => {},
       handleInput: () => {}, // read-only: keystrokes typed into this terminal do nothing
     };
-    logTerminal = vscode.window.createTerminal({ name: 'Git Profiles Log', pty });
+    logTerminal = vscode.window.createTerminal({ name: 'Custom Git Profiles Log', pty });
   }
   return logTerminal;
 }
@@ -60,7 +60,7 @@ function logCommand(command, explanation) {
   fs.promises
     .mkdir(path.dirname(filePath), { recursive: true })
     .then(() => fs.promises.appendFile(filePath, line, 'utf8'))
-    .catch((err) => console.error('Git Profiles: failed to write command log:', err));
+    .catch((err) => console.error('Custom Git Profiles: failed to write command log:', err));
 }
 
 async function setLogLocation() {
@@ -68,7 +68,7 @@ async function setLogLocation() {
   const current = resolveLogFilePath();
 
   const picked = await vscode.window.showSaveDialog({
-    title: 'Choose where Git Profiles should write its command log',
+    title: 'Choose where Custom Git Profiles should write its command log',
     defaultUri: current ? vscode.Uri.file(current) : undefined,
     filters: { 'Log files': ['log'], 'All files': ['*'] },
     saveLabel: 'Use this file',
@@ -106,7 +106,7 @@ async function toggleCommandLog() {
 
   if (!currentlyEnabled) {
     const choice = await vscode.window.showWarningMessage(
-      'Turn on the Git Profiles command log? This will create a log file on disk and echo every git command Git Profiles runs into a dedicated terminal.',
+      'Turn on the Custom Git Profiles command log? This will create a log file on disk and echo every git command Custom Git Profiles runs into a dedicated terminal.',
       { modal: true },
       'Yes',
       'No'

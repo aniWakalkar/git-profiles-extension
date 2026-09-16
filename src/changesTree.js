@@ -79,6 +79,15 @@ class GitChangesProvider {
     this._onDidChangeTreeData.fire();
   }
 
+  // Unique files with staged and/or unstaged changes (same idea as the
+  // built-in Source Control activity-bar badge).
+  changedFileCount() {
+    const names = new Set();
+    for (const f of this.staged) names.add(f.filePath);
+    for (const f of this.unstaged) names.add(f.filePath);
+    return names.size;
+  }
+
   getTreeItem(node) {
     return new GitChangeTreeItem(node);
   }

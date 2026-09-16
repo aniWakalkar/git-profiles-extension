@@ -1,4 +1,4 @@
-# Git Profiles — VS Code Extension
+# Custom Git Profiles — VS Code Extension
 
 Ek sidebar se apne **Git command profiles** run karo, **file changes** stage/commit/push karo,
 **branches switch/merge karo**, aur **commit history** browse karo — sab ek hi activity bar
@@ -7,7 +7,7 @@ container ke andar, teen alag sections mein.
 ## Table of Contents
 
 - [Sidebar Overview](#sidebar-overview)
-- [1. "Git Profiles" section](#1-git-profiles-section)
+- [1. "Custom Git Profiles" section](#1-git-pros-section)
 - [2. "Changes" section](#2-changes-section)
   - [Commit panel (webview)](#commit-panel-webview)
 - [3. "Git Actions" section](#3-git-actions-section)
@@ -29,12 +29,12 @@ container ke andar, teen alag sections mein.
 
 ## Sidebar Overview
 
-Left activity bar mein ek **Git Profiles** icon (🔀-jaisa `</>`+commit-node icon) dikhega. Click
+Left activity bar mein ek **Custom Git Profiles** icon (🔀-jaisa `</>`+commit-node icon) dikhega. Click
 karne par teen collapsible sections khulte hain:
 
 ```
-GIT PROFILES (activity bar container)
- ├─ ▾ Git Profiles     -> apne custom command "profiles" (Normal, Migration, etc.)
+GIT PROS (activity bar container)
+ ├─ ▾ Custom Git Profiles     -> apne custom command "profiles" (Normal, Migration, etc.)
  ├─ ▾ Changes          -> stage / unstage / discard / diff / commit
  └─ ▾ Git Actions      -> switch branch, pull, merge, commit history, command log
 ```
@@ -44,13 +44,13 @@ hai.
 
 ---
 
-## 1. "Git Profiles" section
+## 1. "Custom Git Profiles" section
 
 Ye original feature hai: apne repeat hone wale Git command sequences ko naam de kar save karo,
 aur ek click/checkbox se run karo.
 
 ```
-GIT PROFILES                    [+] [🔑] [🎓] [⟳]
+GIT PROS                        [+] [🔑] [🎓] [⟳]
  ├─ ▸ Normal            [▶] [+] [✎] [🗑]
  │     ☑ git add .
  │     ☑ git commit -m "update"
@@ -90,8 +90,8 @@ GIT PROFILES                    [+] [🔑] [🎓] [⟳]
 
 ### Full form panel (Name + Commands ek page pe)
 
-`+` icon, profile ka `+` (Add Command), ya Command Palette se `Git Profiles: Create New Profile` /
-`Git Profiles: Edit Profile` chalane par ek **pura tab/page** khulta hai:
+`+` icon, profile ka `+` (Add Command), ya Command Palette se `Custom Git Profiles: Create New Profile` /
+`Custom Git Profiles: Edit Profile` chalane par ek **pura tab/page** khulta hai:
 
 ```
 ┌─────────────────────────────────────┐
@@ -312,15 +312,15 @@ COMMITS
 
 ### Training Wheels
 
-**Default: ON.** Jab bhi UI se koi meaningful git command chalne wali ho (stage, commit, switch,
+**Default: OFF.** Jab on ho aur UI se koi meaningful git command chalne wali ho (stage, commit, switch,
 merge, revert, etc.), ek confirmation popup dikhta hai:
 
-> *"Git Profiles wants to run:*
+> *"Custom Git Profiles wants to run:*
 > `$ git checkout feature-x`
 > *Switch to branch "feature-x"* — **Yes** / **No**
 
 **Yes** karne par hi command chalti hai. On/off `gitProfiles.toggleTrainingWheels` (🎓 icon,
-Git Profiles toolbar) se, ya settings.json mein `gitProfiles.trainingWheels`.
+Custom Git Profiles toolbar) se, ya settings.json mein `gitProfiles.trainingWheels`.
 
 Silent/read-only queries (jaise `git status` polling, branch listing) is gate se exempt hain —
 warna bahut zyada popups aate.
@@ -334,18 +334,18 @@ bewajah files generate na hon).
   confirmation popup** aata hai ("this will create a log file on disk..."), **OFF** karne mein
   koi confirmation nahi chahiye.
 - Jab ON ho, har meaningful command (profile-run ho ya UI-triggered) do jagah log hoti hai:
-  1. Ek dedicated **read-only terminal** ("Git Profiles Log") mein real-time echo — har line ke
+  1. Ek dedicated **read-only terminal** ("Custom Git Profiles Log") mein real-time echo — har line ke
      saath ek chhota explanation.
   2. Ek **log file** mein (timestamp + command + explanation).
-- File ki location: `gitProfiles.logFilePath` setting, ya `Git Profiles: Set Command Log Location`
+- File ki location: `gitProfiles.logFilePath` setting, ya `Custom Git Profiles: Set Command Log Location`
   command se file-picker se choose karo (empty chhodo to default location extension ke global
   storage ke andar).
-- `Git Profiles: Open Command Log File` (📄 icon) — log file ko editor mein kholo.
-- `Git Profiles: Show Command Log Terminal` — us terminal ko manually reveal karo.
+- `Custom Git Profiles: Open Command Log File` (📄 icon) — log file ko editor mein kholo.
+- `Custom Git Profiles: Show Command Log Terminal` — us terminal ko manually reveal karo.
 
 ### Authentication
 
-`gitProfiles.setAuthentication` (🔑 icon, Git Profiles toolbar): naam, email, git host (default
+`gitProfiles.setAuthentication` (🔑 icon, Custom Git Profiles toolbar): naam, email, git host (default
 `github.com`), aur password/token (masked input) poochta hai. Save karne par:
 
 - `git config user.name` / `user.email` set ho jate hain.
@@ -368,7 +368,7 @@ bewajah files generate na hon).
 |---|---|---|---|
 | `gitProfiles.profiles` | object | `{Normal: [...], Migration: [...]}` | Named command profiles |
 | `gitProfiles.runInSameTerminal` | boolean | `true` | Profile run ke liye ek hi terminal reuse karo |
-| `gitProfiles.trainingWheels` | boolean | `true` | Har UI-triggered command se pehle confirm popup |
+| `gitProfiles.trainingWheels` | boolean | `false` | Har UI-triggered command se pehle confirm popup |
 | `gitProfiles.enableCommandLog` | boolean | `false` | Command log (file + terminal) on/off |
 | `gitProfiles.logFilePath` | string | `""` (empty = default location) | Log file kahan likhni hai |
 | `gitProfiles.protectedBranches` | string[] | `[]` | In branches mein direct merge nahi, PR khulega (`release/*` jaisa prefix bhi chalega) |
@@ -381,22 +381,22 @@ bewajah files generate na hon).
 
 | Command | Kaam |
 |---|---|
-| `Git Profiles: Run Profile` | List se profile select karo → checked commands run |
-| `Git Profiles: Create New Profile` | Naya profile banao (full form) |
-| `Git Profiles: Edit Profile` | List se profile choose karke edit karo |
-| `Git Profiles: Delete Profile` | List se profile choose karke delete karo |
-| `Git Profiles: Open Profiles in settings.json` | Seedha `gitProfiles.profiles` khol do |
-| `Git Profiles: Set Authentication` | [Authentication](#authentication) setup |
-| `Git Profiles: Clear Authentication` | Cached login hatao |
-| `Git Profiles: Switch Branch` | [Branch switch karo](#switch-branch--auto-stash-flow) |
-| `Git Profiles: Pull` | Current branch pull karo |
-| `Git Profiles: Merge Branches...` | [Multi-branch merge](#merge-branches--protected-branches) |
-| `Git Profiles: Show Commit History` | [Commit History panel](#commit-history-panel) |
-| `Git Profiles: Toggle Training Wheels` | [Training Wheels](#training-wheels) on/off |
-| `Git Profiles: Toggle Command Log` | [Command Log](#command-log) on/off |
-| `Git Profiles: Set Command Log Location` | Log file ka path file-picker se choose karo |
-| `Git Profiles: Open Command Log File` | Log file editor mein kholo |
-| `Git Profiles: Show Command Log Terminal` | Log terminal reveal karo |
+| `Custom Git Profiles: Run Profile` | List se profile select karo → checked commands run |
+| `Custom Git Profiles: Create New Profile` | Naya profile banao (full form) |
+| `Custom Git Profiles: Edit Profile` | List se profile choose karke edit karo |
+| `Custom Git Profiles: Delete Profile` | List se profile choose karke delete karo |
+| `Custom Git Profiles: Open Profiles in settings.json` | Seedha `gitProfiles.profiles` khol do |
+| `Custom Git Profiles: Set Authentication` | [Authentication](#authentication) setup |
+| `Custom Git Profiles: Clear Authentication` | Cached login hatao |
+| `Custom Git Profiles: Switch Branch` | [Branch switch karo](#switch-branch--auto-stash-flow) |
+| `Custom Git Profiles: Pull` | Current branch pull karo |
+| `Custom Git Profiles: Merge Branches...` | [Multi-branch merge](#merge-branches--protected-branches) |
+| `Custom Git Profiles: Show Commit History` | [Commit History panel](#commit-history-panel) |
+| `Custom Git Profiles: Toggle Training Wheels` | [Training Wheels](#training-wheels) on/off |
+| `Custom Git Profiles: Toggle Command Log` | [Command Log](#command-log) on/off |
+| `Custom Git Profiles: Set Command Log Location` | Log file ka path file-picker se choose karo |
+| `Custom Git Profiles: Open Command Log File` | Log file editor mein kholo |
+| `Custom Git Profiles: Show Command Log Terminal` | Log terminal reveal karo |
 
 ---
 
@@ -413,7 +413,7 @@ src/
   changes.js                     # stage/unstage/status (Changes section ka core)
   branches.js                     # branches, switch, merge, pull, protected-branch logic
   changesTree.js                    # "Changes" sidebar tree provider
-  profilesTree.js                     # "Git Profiles" sidebar tree provider
+  profilesTree.js                     # "Custom Git Profiles" sidebar tree provider
   profileForm.js                        # Profile create/edit ka webview form
   profileCommands.js                     # Profile CRUD commands
   diffRevert.js                            # Diff viewer, discard, revert
@@ -430,14 +430,14 @@ src/
 
 1. Folder VS Code mein kholo.
 2. `F5` dabao → "Extension Development Host" window khulega, extension active hoga.
-3. Naye window mein activity bar pe **Git Profiles** icon click karo.
+3. Naye window mein activity bar pe **Custom Git Profiles** icon click karo.
 
 ### Option B — `.vsix` bana ke install karo (sirf apne liye / manually share karne ke liye)
 
 ```bash
 npm install -g @vscode/vsce
 vsce package
-code --install-extension git-profiles-0.1.0.vsix
+code --install-extension git-pros-profiles-0.1.0.vsix
 ```
 
 Ye `.vsix` file kisi ko bhi bhej sakte ho — wo `code --install-extension` ya Extensions panel ke
@@ -449,7 +449,7 @@ discoverability zero hai.
 ## Marketplace pe publish karna (taaki koi bhi search karke install kar sake)
 
 Isse "install from VSIX" ki zarurat nahi rahegi — log seedha VS Code Extensions panel mein
-`Git Profiles` search karke ek click mein install kar payenge, aur future updates bhi
+`Custom Git Profiles` search karke ek click mein install kar payenge, aur future updates bhi
 automatically mil jayenge.
 
 ### Step 1 — Publisher account banao
